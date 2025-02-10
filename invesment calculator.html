@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: right; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Investment Calculator</h2>
+    <label>Initial Investment: <input type="number" id="initial" value="1000"></label><br>
+    <label>Monthly Contribution: <input type="number" id="monthly" value="50"></label><br>
+    <label>Years: <input type="number" id="years" value="5"></label><br>
+    <label>Interest Rate (%): <input type="number" id="rate" value="5"></label><br>
+    <button onclick="calculate()">Calculate</button>
+    
+    <h3>Results</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Years</th>
+                <th>Investment Value</th>
+                <th>Total Contributions</th>
+            </tr>
+        </thead>
+        <tbody id="results"></tbody>
+    </table>
+    
+    <script>
+        function calculate() {
+            let initial = Number(document.getElementById('initial').value);
+            let monthly = Number(document.getElementById('monthly').value);
+            let years = Number(document.getElementById('years').value);
+            let rate = Number(document.getElementById('rate').value) / 100;
+            
+            let results = document.getElementById('results');
+            results.innerHTML = '';
+            
+            let investment = initial;
+            let totalContributions = initial;
+            
+            for (let year = 0; year <= years; year++) {
+                let row = document.createElement('tr');
+                let yearCell = document.createElement('td');
+                let investmentCell = document.createElement('td');
+                let contributionCell = document.createElement('td');
+                
+                yearCell.textContent = "Year " + year;
+                investmentCell.textContent = investment.toFixed(2);
+                contributionCell.textContent = totalContributions.toFixed(2);
+                
+                row.appendChild(yearCell);
+                row.appendChild(investmentCell);
+                row.appendChild(contributionCell);
+                results.appendChild(row);
+                
+                if (year < years) {
+                    totalContributions += monthly * 12;
+                    investment = (investment + monthly * 12) * (1 + rate);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
